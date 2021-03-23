@@ -57,7 +57,7 @@ class _ShowCountriesState extends State<ShowCountries> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 24.0, top: 10.0, right: 24.0),
+            padding: const EdgeInsets.only(left: 20.0, top: 10.0, right: 20.0),
             child: TextField(
               onChanged: (value) {
                 items.clear();
@@ -107,7 +107,7 @@ class _ShowCountriesState extends State<ShowCountries> {
               itemBuilder: (BuildContext context, int index) {
                 var country = items[index];
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 0.0),
                   child: Container(
                     height: 120.0,
                     decoration: BoxDecoration(
@@ -118,16 +118,34 @@ class _ShowCountriesState extends State<ShowCountries> {
                           width: 1.0,
                         )),
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "${country['Country']}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.0,
-                              fontFamily: "DanaMedium",
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${country['Country']}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18.0,
+                                    fontFamily: "DanaMedium",
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  "${country['Slug']}",
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 14.0,
+                                    fontFamily: "DanaMedium",
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
                           ),
                           Image.asset(
