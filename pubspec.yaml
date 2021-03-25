@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_spinkit: ^5.0.0
   http: ^0.13.1
+  persian_date: ^0.1.5
 
 dev_dependencies:
   flutter_test:

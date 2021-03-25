@@ -1,3 +1,4 @@
+import 'package:covid19/screens/show_country_info.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -23,26 +24,30 @@ class _ShowCountriesState extends State<ShowCountries> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                centerTitle: true,
-                title: Text(
-                  "لیست کشورها",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24.0,
-                    fontFamily: "DanaMedium",
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  centerTitle: true,
+                  title: Text(
+                    "لیست کشورها",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
+                      fontFamily: "DanaMedium",
+                    ),
                   ),
+                  backgroundColor: Colors.green,
                 ),
-                backgroundColor: Colors.green,
-              ),
-            ];
-          },
-          body: _buildBody()),
+              ];
+            },
+            body: _buildBody()),
+      ),
     );
   }
 
@@ -108,52 +113,51 @@ class _ShowCountriesState extends State<ShowCountries> {
                 var country = items[index];
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 12.0, 20.0, 0.0),
-                  child: Container(
-                    height: 120.0,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0,
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${country['Country']}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                    fontFamily: "DanaMedium",
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ShowCountryInfo(country);
+                      }));
+                    },
+                    child: Container(
+                      height: 120.0,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${country['Country']}",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontFamily: "DanaMedium",
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  "${country['Slug']}",
-                                  style: TextStyle(
-                                    color: Colors.grey[700],
-                                    fontSize: 14.0,
-                                    fontFamily: "DanaMedium",
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Image.asset(
-                            'assets/flags/${country['ISO2'].toString().toLowerCase()}.png',
-                            width: 60.0,
-                            height: 60.0,
-                          ),
-                        ],
+                            Image.asset(
+                              'assets/flags/${country['ISO2'].toString().toLowerCase()}.png',
+                              width: 60.0,
+                              height: 60.0,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
