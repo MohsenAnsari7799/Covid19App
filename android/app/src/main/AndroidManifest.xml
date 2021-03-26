@@ -2,7 +2,7 @@
     package="com.example.covid19">
    <application
         android:label="covid19"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher_covid19">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

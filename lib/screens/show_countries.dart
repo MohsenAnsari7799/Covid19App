@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:covid19/countryPersianName.dart';
 
 class ShowCountries extends StatefulWidget {
   ShowCountries({Key key}) : super(key: key);
@@ -15,6 +16,8 @@ class _ShowCountriesState extends State<ShowCountries> {
   List countries = [];
   List items = [];
   bool loading = true;
+
+  var txtController = TextEditingController();
 
   @override
   void initState() {
@@ -64,6 +67,7 @@ class _ShowCountriesState extends State<ShowCountries> {
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 10.0, right: 20.0),
             child: TextField(
+              controller: txtController,
               onChanged: (value) {
                 items.clear();
                 if (value.isEmpty) {
@@ -71,9 +75,13 @@ class _ShowCountriesState extends State<ShowCountries> {
                 } else {
                   countries.forEach((element) {
                     if (element['Country']
-                        .toString()
-                        .toLowerCase()
-                        .contains(value)) {
+                            .toString()
+                            .toLowerCase()
+                            .contains(value.toLowerCase()) ||
+                        element['persianName']
+                            .toString()
+                            .toLowerCase()
+                            .contains(value.toLowerCase())) {
                       items.add(element);
                     }
                   });
@@ -89,6 +97,14 @@ class _ShowCountriesState extends State<ShowCountries> {
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    txtController.clear();
+                    items.addAll(countries);
+                    setState(() {});
+                  },
                 ),
                 filled: true,
                 fillColor: Colors.white,
@@ -140,7 +156,7 @@ class _ShowCountriesState extends State<ShowCountries> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${country['Country']}",
+                                    "${country['persianName']}",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18.0,
@@ -174,7 +190,11 @@ class _ShowCountriesState extends State<ShowCountries> {
     var url = Uri.parse('https://api.covid19api.com/countries');
     var responce = await http.get(url);
     if (responce.statusCode == 200) {
-      var jsonResponce = convert.jsonDecode(responce.body);
+      List jsonResponce = convert.jsonDecode(responce.body);
+      jsonResponce.forEach((element) {
+        element['persianName'] =
+            convertCountryISO2ToPersianName[element['ISO2']];
+      });
       countries = jsonResponce;
       items.addAll(jsonResponce);
 
